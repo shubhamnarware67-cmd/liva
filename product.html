@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🛒 Products - My E-Commerce Store</title>
+  <script src="script.js" defer></script>
+  <script src="product.js" defer></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    /* Header */
+    .header {
+      background: #2874f0;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 500;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+    #themeToggle {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+
+    /* Search */
+    .search-bar {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .search-bar input {
+      width: 50%;
+      padding: 8px;
+      border-radius: 5px 0 0 5px;
+      border: 1px solid #ccc;
+    }
+    .search-bar button {
+      padding: 8px 15px;
+      background: #ff6f00;
+      color: white;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .search-bar button:hover {
+      background: #e65100;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(to right, #42a5f5, #2874f0);
+      color: white;
+      text-align: center;
+      padding: 60px 20px;
+      animation: fadeIn 1.5s ease;
+    }
+
+    /* Filter Buttons */
+    .category-filter {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .filter-buttons button {
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      background: #2874f0;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .filter-buttons button.active,
+    .filter-buttons button:hover {
+      background: #005bb5;
+    }
+
+    /* Product Grid */
+    .products {
+      padding: 30px 20px;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 25px;
+    }
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      text-align: center;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+      animation: slideUp 0.8s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .product-card h3 {
+      margin: 10px 0 5px;
+      font-size: 1.1em;
+    }
+    .product-card .price {
+      color: #2874f0;
+      font-weight: bold;
+      margin: 5px 0;
+    }
+    .product-card .rating {
+      color: #ffb300;
+      margin-bottom: 5px;
+    }
+    .product-card button {
+      background: #ff6f00;
+      border: none;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .product-card button:hover {
+      background: #e65100;
+    }
+    .sale-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: red;
+      color: white;
+      padding: 3px 7px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* Offers Section */
+    .offers {
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .offer-banner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .offer-banner img {
+      width: 500px;
+      border-radius: 10px;
+      transition: transform 0.3s;
+    }
+    .offer-banner img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Footer */
+    footer {
+      background: #2874f0;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    @keyframes slideUp {
+      from {opacity: 0; transform: translateY(40px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header">
+    <h1 class="logo">🛍️ My E-Commerce Store</h1>
+    <nav class="navbar">
+      <a href="index.html">Home</a>
+      <a href="product.html" class="active">Products</a>
+      <a href="cart.html">Cart 🛒</a>
+      <button id="themeToggle">🌙</button>
+    </nav>
+
+    <div class="search-bar">
+      <input type="text" id="searchBox" placeholder="Search products...">
+      <button onclick="searchProduct()">🔍</button>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="hero">
+    <h2>🛒 Explore Our Latest Collection</h2>
+    <p>Find top deals on Electronics, Fashion, and more!</p>
+  </section>
+
+  <!-- Filter -->
+  <section class="category-filter">
+    <h2>Filter by Category</h2>
+    <div class="filter-buttons">
+      <button onclick="filterProducts('All')" class="active">All</button>
+      <button onclick="filterProducts('Electronics')">Electronics</button>
+      <button onclick="filterProducts('Fashion')">Fashion</button>
+      <button onclick="filterProducts('Accessories')">Accessories</button>
+      <button onclick="filterProducts('Home')">Home Decor</button>
+    </div>
+  </section>
+
+  <!-- Product Grid -->
+  <section class="products">
+    <div id="productGrid" class="product-grid">
+      <!-- Products loaded by JS -->
+    </div>
+  </section>
+
+  <!-- Special Offers -->
+  <section class="offers">
+    <h2>🎁 Special Offers for You</h2>
+    <div class="offer-banner">
+      <img src="https://images.unsplash.com/photo-1606813902734-418dc52a9c5b?auto=format&fit=crop&w=1000&q=80" alt="Winter Sale">
+      <img src="https://images.unsplash.com/photo-1584466977773-6b7aa8a64c49?auto=format&fit=crop&w=1000&q=80" alt="Buy 2 Get 1 Free">
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 My E-Commerce Store | Built with ❤️ using HTML, CSS & JS</p>
+  </footer>
+
+  <script>
+    // Product data
+    const products = [
+      {name: "iPhone 14", cat: "Electronics", price: 79999, img: "https://images.unsplash.com/photo-1603898037225-0b2f4b1c8c8b?auto=format&fit=crop&w=800&q=80", sale: true, rating: 4.8},
+      {name: "MacBook Air", cat: "Electronics", price: 104999, img: "https://images.unsplash.com/photo-1612831662375-295c1003d3d7?auto=format&fit=crop&w=800&q=80", sale: false, rating: 4.9},
+      {name: "Sony Headphones", cat: "Accessories", price: 2999, img: "https://images.unsplash.com/photo-1580894908361-9671950332f5?auto=format&fit=crop&w=800&q=80", sale: true, rating: 4.5},
+      {name: "Men's Leather Jacket", cat: "Fashion", price: 4999, img: "https://images.unsplash.com/photo-1600181952037-6edb01cc845d?auto=format&fit=crop&w=800&q=80", sale: false, rating: 4.3},
+      {name: "Nike Air Max", cat: "Fashion", price: 6999, img: "https://images.unsplash.com/photo-1606813902734-418dc52a9c5b?auto=format&fit=crop&w=800&q=80", sale: true, rating: 4.7},
+      {name: "Smartwatch", cat: "Accessories", price: 3499, img: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80", sale: true, rating: 4.4},
+      {name: "Home Lamp", cat: "Home", price: 899, img: "https://images.unsplash.com/photo-1584466977773-6b7aa8a64c49?auto=format&fit=crop&w=800&q=80", sale: false, rating: 4.1},
+      {name: "Wall Clock", cat: "Home", price: 799, img: "https://images.unsplash.com/photo-1616628188598-84f86931db56?auto=format&fit=crop&w=800&q=80", sale: false, rating: 4.0},
+      {name: "Bluetooth Speaker", cat: "Electronics", price: 1999, img: "https://images.unsplash.com/photo-1580910051078-d8e2f0a9d4c8?auto=format&fit=crop&w=800&q=80", sale: true, rating: 4.2},
+      {name: "Stylish Backpack", cat: "Accessories", price: 1599, img: "https://images.unsplash.com/photo-1618220030966-3ba8f974f4b3?auto=format&fit=crop&w=800&q=80", sale: true, rating: 4.3},
+      {name: "Women’s Handbag", cat: "Fashion", price: 2799, img: "https://images.unsplash.com/photo-1618354697220-dcf2d14c4f4a?auto=format&fit=crop&w=800&q=80", sale: false, rating: 4.5},
+      {name: "Decor Vase", cat: "Home", price: 699, img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80", sale: true, rating: 4.1},
+      {name: "Wireless Mouse", cat: "Electronics", price: 599, img: "https://images.unsplash.com/photo-1620803362613-2d3d63f1f4ff?auto=format&fit=crop&w=800&q=80", sale: true, rating: 4.2},
+      {name: "Gaming Keyboard", cat: "Electronics", price: 1499, img: "https://images.unsplash.com/photo-1587202372775-98922d7e88c6?auto=format&fit=crop&w=800&q=80", sale: false, rating: 4.4},
+      {name: "Elegant Dress", cat: "Fashion", price: 2499, img: "https://images.unsplash.com/photo-1576566588028-b1c932b0638b?auto=format&fit=crop&w=800&q=80", sale: true, rating: 4.6}
+    ];
+
+    const grid = document.getElementById("productGrid");
+
+    function displayProducts(items) {
+      grid.innerHTML = "";
+      items.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "product-card";
+        div.innerHTML = `
+          ${p.sale ? "<div class='sale-badge'>SALE</div>" : ""}
+          <img src="${p.img}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <div class="rating">${"⭐".repeat(Math.round(p.rating))}</div>
+          <p class="price">₹${p.price.toLocaleString()}</p>
+          <button onclick="alert('${p.name} added to cart!')">Add to Cart</button>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function filterProducts(category) {
+      const btns = document.querySelectorAll(".filter-buttons button");
+      btns.forEach(b => b.classList.remove("active"));
+      event.target.classList.add("active");
+
+      if (category === "All") displayProducts(products);
+      else displayProducts(products.filter(p => p.cat === category));
+    }
+
+    window.onload = () => displayProducts(products);
+  </script>
+</body>
+</html>

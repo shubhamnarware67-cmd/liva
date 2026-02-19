@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🛒 Your Cart - My E-Commerce Store</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif;}
+body{background:#f8f9fa;color:#333;}
+.navbar{background:#2874f0;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:15px 25px;}
+.navbar a{color:#fff;text-decoration:none;font-weight:bold;}
+h1{text-align:center;margin:30px 0;color:#2874f0;}
+#cart-container{max-width:900px;margin:0 auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
+.cart-item{display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid #eee;flex-wrap:wrap;}
+.cart-item img{width:100px;height:100px;object-fit:cover;border-radius:10px;}
+.cart-info{flex:1;margin-left:20px;}
+.cart-info h3{font-size:1.1em;margin-bottom:5px;}
+.cart-info p{color:#555;}
+.cart-actions{display:flex;align-items:center;gap:10px;}
+.cart-actions button{background:#2874f0;color:#fff;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;transition:0.3s;}
+.cart-actions button:hover{background:#005bb5;}
+.remove-btn{background:#ff5252;}
+.remove-btn:hover{background:#d50000;}
+#total-price{text-align:center;margin:25px 0;font-size:1.3em;color:#2874f0;}
+.checkout-btn{display:block;margin:0 auto 40px;padding:10px 20px;background:#ff6f00;color:#fff;border:none;border-radius:30px;cursor:pointer;font-size:1em;transition:0.3s;}
+.checkout-btn:hover{background:#e65100;}
+.empty{text-align:center;font-size:1.2em;color:#888;margin:50px 0;}
+footer{background:#2874f0;color:#fff;text-align:center;padding:15px;margin-top:40px;}
+@media(max-width:600px){
+  .cart-item{flex-direction:column;text-align:center;}
+  .cart-info{margin:10px 0;}
+}
+</style>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="logo"><a href="index.html">🛍️ MyStore</a></div>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="product.html">Products</a>
+    <a href="cart.html" style="text-decoration:underline;">Cart</a>
+  </div>
+</nav>
+
+<h1>Your Shopping Cart</h1>
+
+<section id="cart-container"></section>
+<h2 id="total-price"></h2>
+<button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+
+<footer>
+  <p>© 2025 My E-Commerce Store | Built with ❤️ using HTML, CSS & JS</p>
+</footer>
+
+<script>
+// ✅ ---- CART SCRIPT ----
+
+// Read cart from localStorage
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// For demo: preload 2 products if empty
+if(cart.length === 0){
+  cart = [
+    {id:1,name:"iPhone 14",price:79999,img:"https://images.unsplash.com/photo-1603898037225-0b2f4b1c8c8b?auto=format&fit=crop&w=600&q=80",qty:1},
+    {id:2,name:"Nike Air Max",price:6999,img:"https://images.unsplash.com/photo-1606813902734-418dc52a9c5b?auto=format&fit=crop&w=600&q=80",qty:1}
+  ];
+  localStorage.setItem("cart",JSON.stringify(cart));
+}
+
+const container = document.getElementById("cart-container");
+const totalEl = document.getElementById("total-price");
+
+// Save and re-render
+function saveCart(){
+  localStorage.setItem("cart",JSON.stringify(cart));
+  renderCart();
+}
+
+// Render function
+function renderCart(){
+  container.innerHTML="";
+  if(cart.length===0){
+    container.innerHTML="<p class='empty'>🛒 Your cart is empty!</p>";
+    totalEl.textContent="";
+    return;
+  }
+
+  let total=0;
+  cart.forEach(item=>{
+    total += item.price * item.qty;
+    const div=document.createElement("div");
+    div.className="cart-item";
+    div.innerHTML=`
+      <img src="${item.img}" alt="${item.name}">
+      <div class="cart-info">
+        <h3>${item.name}</h3>
+        <p>₹${item.price.toLocaleString()}</p>
+      </div>
+      <div class="cart-actions">
+        <button onclick="decrease(${item.id})">-</button>
+        <span>${item.qty}</span>
+        <button onclick="increase(${item.id})">+</button>
+        <button class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+
+  totalEl.textContent=`Total: ₹${total.toLocaleString()}`;
+}
+
+// Increase / Decrease / Remove
+function increase(id){
+  const item = cart.find(p=>p.id===id);
+  if(item){ item.qty++; saveCart(); }
+}
+function decrease(id){
+  const item = cart.find(p=>p.id===id);
+  if(item){
+    if(item.qty>1) item.qty--;
+    else cart = cart.filter(p=>p.id!==id);
+    saveCart();
+  }
+}
+function removeItem(id){
+  cart = cart.filter(p=>p.id!==id);
+  saveCart();
+}
+
+// Checkout simulation
+function checkout(){
+  if(cart.length===0){
+    alert("Your cart is empty!");
+    return;
+  }
+  alert("✅ Checkout successful! Thank you for your order.");
+  cart=[];
+  saveCart();
+}
+
+// Initial render
+renderCart();
+</script>
+</body>
+</html>
